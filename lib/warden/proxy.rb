@@ -354,7 +354,9 @@ module Warden
         puts "** warden strategy is #{strategy} and was performed #{!strategy.performed?} and is it valid? #{strategy.valid?}" if strategy
         next unless strategy && !strategy.performed? && strategy.valid?
 
+        puts "**= WE HAVE A WINNING STRATEGY"
         self.winning_strategy = @winning_strategies[scope] = strategy
+        puts self.winning_strategy
         strategy._run!
         break if strategy.halted?
       end
