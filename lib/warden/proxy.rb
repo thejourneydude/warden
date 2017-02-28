@@ -349,7 +349,7 @@ module Warden
 
       (strategies || args).each do |name|
         strategy = _fetch_strategy(name, scope)
-        puts "** warden strategy is #{strategy} and is it valid? #{strategy.valid?}"  if strategy
+        puts "** warden strategy is #{strategy} and was performed #{!strategy.performed?} and  is it valid? #{strategy.valid?}"  if strategy
         next unless strategy && !strategy.performed? && strategy.valid?
 
         self.winning_strategy = @winning_strategies[scope] = strategy
