@@ -162,6 +162,7 @@ module Warden
     #
     # :api: public
     def set_user(user, opts = {})
+      puts "set_user called"
       scope = (opts[:scope] ||= @config.default_scope)
 
       # Get the default options from the master configuration for the given scope
@@ -319,6 +320,7 @@ module Warden
       _run_strategies_for(scope, args)
 
       if winning_strategy && winning_strategy.user
+        puts "winning strategy and winning strategy has a user"
         opts[:store] = opts.fetch(:store, winning_strategy.store?)
         set_user(winning_strategy.user, opts.merge!(:event => :authentication))
       end
@@ -349,7 +351,7 @@ module Warden
 
       (strategies || args).each do |name|
         strategy = _fetch_strategy(name, scope)
-        puts "** warden strategy is #{strategy} and was performed #{!strategy.performed?} and  is it valid? #{strategy.valid?}"  if strategy
+        puts "** warden strategy is #{strategy} and was performed #{!strategy.performed?} and is it valid? #{strategy.valid?}" if strategy
         next unless strategy && !strategy.performed? && strategy.valid?
 
         self.winning_strategy = @winning_strategies[scope] = strategy
