@@ -319,12 +319,13 @@ module Warden
       return user, opts if user = user(opts.merge(:scope => scope))
       _run_strategies_for(scope, args)
 
+      puts "_run_strategies_for" is finished
       if winning_strategy && winning_strategy.user
         puts "winning strategy and winning strategy has a user"
         opts[:store] = opts.fetch(:store, winning_strategy.store?)
         set_user(winning_strategy.user, opts.merge!(:event => :authentication))
       end
-
+      puts "we skipped the conditional on line 323"
       [@users[scope], opts]
     end
 
