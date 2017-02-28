@@ -124,7 +124,10 @@ module Warden
     #
     # :api: public
     def authenticate!(*args)
+      puts "calling authenticate! from within the method"
       user, opts = _perform_authentication(*args)
+      puts "user #{user}"
+      puts "opts #{opts}"
       throw(:warden, opts) unless user
       user
     end
@@ -162,7 +165,6 @@ module Warden
     #
     # :api: public
     def set_user(user, opts = {})
-      puts "set_user called"
       scope = (opts[:scope] ||= @config.default_scope)
 
       # Get the default options from the master configuration for the given scope
@@ -319,13 +321,11 @@ module Warden
       return user, opts if user = user(opts.merge(:scope => scope))
       _run_strategies_for(scope, args)
 
-      puts "_run_strategies_for is finished"
       if winning_strategy && winning_strategy.user
-        puts "winning strategy and winning strategy has a user"
         opts[:store] = opts.fetch(:store, winning_strategy.store?)
         set_user(winning_strategy.user, opts.merge!(:event => :authentication))
       end
-      puts "we skipped the conditional on line 323"
+
       [@users[scope], opts]
     end
 
@@ -348,7 +348,6 @@ module Warden
         defaults   = @config[:default_strategies]
         strategies = defaults[scope] || defaults[:_all]
       end
-      puts "===== strategies are about to run"
 
       (strategies || args).each do |name|
         strategy = _fetch_strategy(name, scope)
